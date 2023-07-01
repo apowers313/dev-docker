@@ -1,5 +1,6 @@
 .PHONY: build run shell login publish
 DOCKER=sudo docker
+SSL_DIR=/home/apowers/atoms-cert
 #BUILD_EXTRA=--progress=plain
 IMGNAME=apowers313/dev
 VERSION=1.0.0
@@ -9,10 +10,13 @@ SUPERVISOR_PORT=8001:8001
 INDEX_PORT=80:80
 JUPYTER_PORT=8002:8002
 VSCODE_PORT=8004:8004
-RUNCMD=run -p $(SUPERVISOR_PORT) -p $(INDEX_PORT) -p $(VSCODE_PORT) -p $(JUPYTER_PORT) -it $(IMGNAME):latest
+DOCKER_PORTS=-p $(SUPERVISOR_PORT) -p $(INDEX_PORT) -p $(VSCODE_PORT) -p $(JUPYTER_PORT) 
+DOCKER_VOLUMES=-v $(SSL_DIR):/home/apowers/ssl 
+DOCKER_ENV=-e PASSWORD=test
+RUNCMD=run $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) -it $(IMGNAME):latest
 
 build:
-	$(DOCKER) build . --build-arg DEV_PASSWORD=$(DEV_PASSWORD) $(BUILD_EXTRA) -t $(IMGNAME):latest
+	$(DOCKER) build . $(BUILD_EXTRA) -t $(IMGNAME):latest
 
 run:
 	$(DOCKER) $(RUNCMD)
