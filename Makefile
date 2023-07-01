@@ -1,6 +1,6 @@
 .PHONY: build run shell login publish
 DOCKER=sudo docker
-BUILD_EXTRA=--progress=plain
+#BUILD_EXTRA=--progress=plain
 IMGNAME=apowers313/dev
 VERSION=1.0.0
 GITPKG=ghcr.io/$(IMGNAME)
