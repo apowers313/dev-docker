@@ -42,6 +42,7 @@ USER apowers
 #ENV PASSWORD password
 RUN git config --global user.email "apowers@ato.ms"
 RUN git config --global user.name "Adam Powers"
+RUN git config credential.helper cache
 RUN sudo chown apowers:apowers -R /home/apowers
 
 # Run Server
