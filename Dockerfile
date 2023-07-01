@@ -14,9 +14,10 @@ RUN apt install -y net-tools sudo
 # Setup user
 RUN useradd -ms /bin/bash apowers
 WORKDIR /home/apowers
+RUN mkdir /home/apowers/Projects
+RUN chown apowers:apowers /home/apowers/Projects
 RUN echo "export PASSWORD=$VSCODE_PASSWORD" >> /home/apowers/.profile
 RUN echo "apowers ALL=(ALL:All) NOPASSWD:ALL" >> /etc/sudoers
-#USER apowers
 
 # Python
 RUN apt install -y python3 python3-pip
@@ -51,5 +52,7 @@ RUN mkdir -p /var/log/supervisord
 COPY ./supervisord.base.conf /usr/local/etc/supervisord.base.conf
 EXPOSE 8001
 
+USER apowers
+
 # Run Server
-CMD ["supervisord", "-c", "/usr/local/etc/supervisord.base.conf"]
+CMD ["sudo", "supervisord", "-c", "/usr/local/etc/supervisord.base.conf"]
