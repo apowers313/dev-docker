@@ -43,6 +43,7 @@ USER apowers
 RUN git config --global user.email "apowers@ato.ms"
 RUN git config --global user.name "Adam Powers"
 RUN sudo chown apowers:apowers -R /home/apowers
+RUN unset DEBIAN_FRONTEND
 
 # Run Server
 CMD ["sudo", "-E", "supervisord", "-c", "/usr/local/etc/supervisord.base.conf"]
