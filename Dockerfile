@@ -18,6 +18,9 @@ RUN echo "apowers ALL=(ALL:All) NOPASSWD:ALL" >> /etc/sudoers
 # Python
 RUN apt install -y python3 python3-pip
 
+# Node
+#RUN apt install -y nodejs
+
 # VS Code
 RUN apt install -y jq libatomic1 nano netcat
 RUN curl -fsSL https://code-server.dev/install.sh |  sh
