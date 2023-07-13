@@ -48,5 +48,8 @@ RUN git config --global user.name "Adam Powers"
 RUN sudo chown apowers:apowers -R /home/apowers
 RUN unset DEBIAN_FRONTEND
 
+# for development purposes
+EXPOSE 9000-9099
+
 # Run Server
 CMD ["sudo", "-E", "supervisord", "-c", "/usr/local/etc/supervisord.base.conf"]
