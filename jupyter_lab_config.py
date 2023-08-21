@@ -950,7 +950,7 @@ c.ServerApp.keyfile = '/home/apowers/ssl/atoms.key'
 
 ## DEPRECATED, use root_dir.
 #  Default: ''
-# c.ServerApp.notebook_dir = ''
+c.ServerApp.notebook_dir = '/home/apowers/Projects/jupyter'
 
 ## Whether to open in a browser after starting.
 #                          The specific browser used is platform dependent and
@@ -963,7 +963,7 @@ c.ServerApp.keyfile = '/home/apowers/ssl/atoms.key'
 ## DEPRECATED in 2.0. Use PasswordIdentityProvider.hashed_password
 #  Default: ''
 import os
-from notebook.auth import passwd
+from jupyter_server.auth import passwd
 if "PASSWORD" in os.environ:
     c.ServerApp.password = passwd(os.environ['PASSWORD'])
 else:

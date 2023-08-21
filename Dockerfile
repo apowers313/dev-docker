@@ -4,14 +4,17 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt update
 RUN apt install -y ubuntu-server
+#RUN echo y | unminimize
 
 # Basic tools
+RUN apt update
 RUN apt install -y net-tools sudo
 
 # Setup user
 RUN useradd -ms /bin/bash apowers
 WORKDIR /home/apowers
 RUN mkdir /home/apowers/Projects
+RUN mkdir /home/apowers/Projects/jupyter
 RUN chown apowers:apowers /home/apowers/Projects
 RUN echo "apowers ALL=(ALL:All) NOPASSWD:ALL" >> /etc/sudoers
 
