@@ -950,7 +950,7 @@ c.ServerApp.keyfile = '/home/apowers/ssl/atoms.key'
 
 ## DEPRECATED, use root_dir.
 #  Default: ''
-c.ServerApp.notebook_dir = '/home/apowers/Projects/jupyter'
+c.ServerApp.notebook_dir = '/home/apowers/Projects/roc/experiments'
 
 ## Whether to open in a browser after starting.
 #                          The specific browser used is platform dependent and
