@@ -10,6 +10,9 @@ RUN apt install -y ubuntu-server
 RUN apt update
 RUN apt install -y net-tools sudo
 
+# Install user system
+RUN yes | /usr/local/sbin/unminimize
+
 # Setup user
 RUN useradd -ms /bin/bash apowers
 WORKDIR /home/apowers
@@ -50,6 +53,23 @@ RUN git config --global user.email "apowers@ato.ms"
 RUN git config --global user.name "Adam Powers"
 RUN sudo chown apowers:apowers -R /home/apowers
 RUN unset DEBIAN_FRONTEND
+
+# Install OpenSSH server
+USER root
+RUN apt install -y openssh-server
+# Configure SSHD.
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+RUN mkdir /var/run/sshd
+RUN bash -c 'install -m755 <(printf "#!/bin/sh\nexit 0") /usr/sbin/policy-rc.d'
+RUN ex +'%s/^#\zeListenAddress/\1/g' -scwq /etc/ssh/sshd_config
+RUN ex +'%s/^#\zeHostKey .*ssh_host_.*_key/\1/g' -scwq /etc/ssh/sshd_config
+RUN RUNLEVEL=1 dpkg-reconfigure openssh-server
+RUN ssh-keygen -A -v
+RUN update-rc.d ssh defaults
+USER apowers
+
+EXPOSE 22
 
 # for development purposes
 EXPOSE 9000-9099
