@@ -22,20 +22,49 @@ RUN chown apowers:apowers /home/apowers/Projects
 RUN echo "apowers ALL=(ALL:All) NOPASSWD:ALL" >> /etc/sudoers
 
 # Python
-RUN apt install -y python3 python3-pip
+#RUN uv python install 3.10 3.11 3.12 3.13
+RUN sudo add-apt-repository -y ppa:deadsnakes/ppa
+# Python 3.11
+RUN sudo apt install -y python3.11 python3.11-dev
+# Python 3.12
+RUN sudo apt install -y python3.12 python3.12-dev
+# Python 3.13
+RUN sudo apt install -y python3.12 python3.12-dev
+RUN sudo apt install -y python3-pip
 
-# Node
-#RUN apt install -y nodejs
+# UV
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# https://github.com/astral-sh/uv/issues/6794
 
-# VS Code
-RUN apt install -y jq libatomic1 nano netcat
-RUN curl -fsSL https://code-server.dev/install.sh |  sh
-EXPOSE 8004
+# Hatch
+RUN curl -Lo hatch-universal.pkg https://github.com/pypa/hatch/releases/latest/download/hatch-universal.pkg
 
 # JupyterLab
 RUN pip3 install jupyterlab notebook
 COPY ./jupyter_lab_config.py /home/apowers/.jupyter/jupyter_lab_config.py
 EXPOSE 8002
+
+# Jupyter Extensions
+# TODO
+
+# Marimo
+RUN pip3 install marimo
+EXPOSE 8003
+
+# node.js
+RUN curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+RUN sudo apt-get install -y nodejs
+
+# mermaid diagrams
+RUN npm install -g mmdc
+
+# C / C++ Utils
+RUN sudo apt-get install -y clang clangd
+
+# VS Code
+RUN apt install -y jq libatomic1 nano netcat
+RUN curl -fsSL https://code-server.dev/install.sh |  sh
+EXPOSE 8004
 
 # http index of running services
 COPY index.html /var/run/indexserver/index.html
@@ -70,6 +99,9 @@ RUN update-rc.d ssh defaults
 USER apowers
 
 EXPOSE 22
+
+# classic linux tools
+RUN sudo apt install -y inetutils-telnet inetutils-ping fortune rsync bsdmainutils
 
 # for development purposes
 EXPOSE 9000-9099
